@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Breathe Freely — Design Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --base: #0D0F12;
+      --primary: #4ADE80;
+      --primaryMuted: #10B981;
+      --primaryDark: #064E3B;
+      --amber: #F59E0B;
+      --amberMuted: #D97706;
+      --textPrimary: #FFFFFF;
+      --textSecondary: #9CA3AF;
+      --textMuted: #6B7280;
+      --surface: #181B21;
+      --surfaceHighlight: #232730;
+      --surfaceBorder: #1F232A;
+      --error: #EF4444;
+      --success: #4ADE80;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(180deg, #0a0c0f 0%, var(--base) 100%);
+      min-height: 100vh;
+      padding: 60px 20px 40px;
+      color: var(--textPrimary);
+    }
+
+    .preview-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .preview-header h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 56px;
+      font-weight: 700;
+      color: var(--textPrimary);
+      margin-bottom: 16px;
+      letter-spacing: -2px;
+      background: linear-gradient(135deg, var(--primary) 0%, #86efac 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .preview-header p {
+      color: var(--textSecondary);
+      font-size: 18px;
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .screens-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 48px;
+      max-width: 1500px;
+      margin: 0 auto;
+    }
+
+    .phone-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .phone-frame {
+      width: 375px;
+      height: 780px;
+      background: var(--base);
+      border-radius: 48px;
+      border: 10px solid #2a2d35;
+      overflow: hidden;
+      position: relative;
+      box-shadow:
+        0 50px 120px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(255, 255, 255, 0.08),
+        inset 0 0 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .phone-frame::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 160px;
+      height: 32px;
+      background: #2a2d35;
+      border-radius: 0 0 20px 20px;
+      z-index: 100;
+    }
+
+    .phone-frame::after {
+      content: '';
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 16px;
+      background: #1a1d24;
+      border-radius: 0 0 10px 10px;
+      z-index: 101;
+    }
+
+    .screen-content {
+      padding: 55px 20px 24px;
+      height: 100%;
+      overflow-y: auto;
+    }
+
+    .screen-content::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .screen-content::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .screen-content::-webkit-scrollbar-thumb {
+      background: var(--surfaceBorder);
+      border-radius: 3px;
+    }
+
+    .screen-label {
+      text-align: center;
+      color: var(--textSecondary);
+      font-size: 13px;
+      margin-top: 20px;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      font-weight: 500;
+    }
+
+    /* ===== HOME SCREEN ===== */
+    .home-header {
+      margin-bottom: 28px;
+    }
+
+    .home-header h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 34px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      letter-spacing: -0.5px;
+    }
+
+    .home-header p {
+      color: var(--textSecondary);
+      font-size: 15px;
+    }
+
+    .timer-card {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 28px 24px;
+      margin-bottom: 16px;
+      border: 1px solid var(--surfaceBorder);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .timer-label {
+      color: var(--textSecondary);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    .timer-display {
+      text-align: center;
+      padding: 24px 16px;
+      background: linear-gradient(135deg, rgba(74, 222, 128, 0.08) 0%, rgba(74, 222, 128, 0.02) 100%);
+      border-radius: 16px;
+      border: 1px solid rgba(74, 222, 128, 0.15);
+    }
+
+    .timer-days {
+      font-family: 'Fraunces', serif;
+      font-size: 80px;
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1;
+      letter-spacing: -3px;
+      text-shadow: 0 0 40px rgba(74, 222, 128, 0.3);
+    }
+
+    .timer-days-label {
+      font-size: 15px;
+      color: var(--textSecondary);
+      margin-top: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .timer-time {
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--textPrimary);
+      margin-top: 16px;
+      font-family: 'Inter', monospace;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -1px;
+    }
+
+    .money-card {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.18) 0%, rgba(245, 158, 11, 0.06) 100%);
+      border-radius: 16px;
+      padding: 20px;
+      margin-top: 20px;
+      border: 1px solid rgba(245, 158, 11, 0.25);
+    }
+
+    .money-label {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .money-value {
+      font-family: 'Fraunces', serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--amber);
+      letter-spacing: -1px;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 15px 18px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: var(--base);
+      box-shadow: 0 4px 16px rgba(74, 222, 128, 0.3);
+    }
+
+    .btn-amber {
+      background: var(--amber);
+      color: var(--base);
+      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--textPrimary);
+      border: 1px solid var(--surfaceBorder);
+    }
+
+    .btn-secondary:hover {
+      background: var(--surfaceHighlight);
+    }
+
+    .milestone-card {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 22px;
+      margin-bottom: 16px;
+      border: 1px solid var(--surfaceBorder);
+    }
+
+    .milestone-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 14px;
+      color: var(--textPrimary);
+    }
+
+    .milestone-progress {
+      background: var(--surfaceHighlight);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .milestone-progress p {
+      font-size: 13px;
+      color: var(--textSecondary);
+      line-height: 1.6;
+    }
+
+    .milestone-progress strong {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .milestone-hint {
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--textMuted);
+    }
+
+    /* ===== SOS SCREEN ===== */
+    .sos-header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .sos-header h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 30px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+
+    .sos-header p {
+      color: var(--textSecondary);
+      font-size: 14px;
+    }
+
+    .breathing-container {
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .breathing-orb-container {
+      position: relative;
+      width: 220px;
+      height: 220px;
+      margin: 30px auto;
+    }
+
+    .breathing-orb {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #86efac 0%, var(--primary) 40%, var(--primaryMuted) 100%);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: breathe 8s ease-in-out infinite;
+      box-shadow:
+        0 0 80px rgba(74, 222, 128, 0.5),
+        0 0 120px rgba(74, 222, 128, 0.3),
+        inset 0 0 40px rgba(255, 255, 255, 0.2);
+    }
+
+    .breathing-orb-ring {
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      border: 2px solid rgba(74, 222, 128, 0.3);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: pulse-ring 8s ease-in-out infinite;
+    }
+
+    @keyframes breathe {
+      0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.8;
+      }
+      33% {
+        transform: translate(-50%, -50%) scale(1.25);
+        opacity: 1;
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(1.25);
+        opacity: 1;
+      }
+      83% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.8;
+      }
+    }
+
+    @keyframes pulse-ring {
+      0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.3;
+      }
+      33% {
+        transform: translate(-50%, -50%) scale(1.15);
+        opacity: 0.5;
+      }
+    }
+
+    .breathing-stage {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 8px;
+      font-family: 'Fraunces', serif;
+    }
+
+    .breathing-timer {
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--textPrimary);
+      font-variant-numeric: tabular-nums;
+      margin: 16px 0;
+    }
+
+    .breathing-instructions {
+      margin-top: 24px;
+    }
+
+    .breathing-instructions p {
+      color: var(--textSecondary);
+      font-size: 14px;
+      line-height: 1.7;
+      margin-bottom: 8px;
+    }
+
+    .breathing-icon {
+      font-size: 36px;
+      margin: 16px 0;
+    }
+
+    .outcome-section {
+      margin-top: 32px;
+    }
+
+    .outcome-section p {
+      text-align: center;
+      color: var(--textSecondary);
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    /* ===== CRAVING LOG SCREEN ===== */
+    .form-screen {
+      padding: 30px 20px;
+    }
+
+    .form-title {
+      font-family: 'Fraunces', serif;
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+
+    .form-subtitle {
+      color: var(--textSecondary);
+      font-size: 14px;
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+
+    .section-label {
+      font-size: 12px;
+      color: var(--textSecondary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+      font-weight: 500;
+    }
+
+    .chip-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+
+    .chip {
+      padding: 10px 16px;
+      background: var(--surface);
+      border: 2px solid var(--surfaceBorder);
+      border-radius: 24px;
+      font-size: 13px;
+      color: var(--textPrimary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 500;
+    }
+
+    .chip:hover {
+      border-color: var(--primaryMuted);
+    }
+
+    .chip.selected {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: var(--base);
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(74, 222, 128, 0.3);
+    }
+
+    .outcome-buttons {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .outcome-btn {
+      flex: 1;
+      padding: 18px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 600;
+      border: 2px solid var(--surfaceBorder);
+      background: var(--surface);
+      color: var(--textPrimary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .outcome-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .outcome-btn.selected {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: var(--base);
+      box-shadow: 0 4px 16px rgba(74, 222, 128, 0.3);
+    }
+
+    .outcome-btn.danger.selected {
+      border-color: var(--error);
+      background: var(--error);
+      color: white;
+      box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
+    }
+
+    /* ===== HEALTH TIMELINE SCREEN ===== */
+    .timeline-header {
+      margin-bottom: 28px;
+    }
+
+    .timeline-header h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 32px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      letter-spacing: -0.5px;
+    }
+
+    .timeline-header p {
+      color: var(--textSecondary);
+      font-size: 14px;
+    }
+
+    .timeline-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 16px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--surfaceBorder);
+      transition: background 0.2s ease;
+    }
+
+    .timeline-item:last-child {
+      border-bottom: none;
+    }
+
+    .timeline-item:hover {
+      margin: 0 -10px;
+      padding: 18px 10px;
+      background: rgba(74, 222, 128, 0.03);
+      border-radius: 12px;
+    }
+
+    .timeline-badge {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--surfaceHighlight);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--textSecondary);
+      border: 2px solid transparent;
+      transition: all 0.2s ease;
+    }
+
+    .timeline-badge.completed {
+      background: var(--primary);
+      color: var(--base);
+      border-color: rgba(74, 222, 128, 0.3);
+      box-shadow: 0 4px 16px rgba(74, 222, 128, 0.3);
+    }
+
+    .timeline-badge.current {
+      background: var(--amber);
+      color: var(--base);
+      border-color: rgba(245, 158, 11, 0.3);
+      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.3);
+      animation: pulse-badge 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-badge {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .timeline-content {
+      flex: 1;
+      padding-top: 4px;
+    }
+
+    .timeline-content h4 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: var(--textPrimary);
+      transition: color 0.2s ease;
+    }
+
+    .timeline-content h4.completed {
+      color: var(--primary);
+    }
+
+    .timeline-content p {
+      font-size: 13px;
+      color: var(--textSecondary);
+      line-height: 1.6;
+    }
+
+    /* ===== SETTINGS SCREEN ===== */
+    .settings-header {
+      margin-bottom: 28px;
+    }
+
+    .settings-header h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 32px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      letter-spacing: -0.5px;
+    }
+
+    .settings-header p {
+      color: var(--textSecondary);
+      font-size: 14px;
+    }
+
+    .settings-section {
+      margin-bottom: 28px;
+    }
+
+    .settings-section-title {
+      font-size: 12px;
+      color: var(--textMuted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+      font-weight: 500;
+      padding-left: 4px;
+    }
+
+    .settings-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--surfaceBorder);
+    }
+
+    .settings-item:last-child {
+      border-bottom: none;
+    }
+
+    .settings-label {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--textPrimary);
+    }
+
+    .settings-value {
+      color: var(--textSecondary);
+      font-size: 14px;
+    }
+
+    .toggle {
+      width: 52px;
+      height: 30px;
+      background: var(--surfaceHighlight);
+      border-radius: 15px;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      border: 2px solid var(--surfaceBorder);
+    }
+
+    .toggle.active {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .toggle-knob {
+      width: 22px;
+      height: 22px;
+      background: white;
+      border-radius: 50%;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .toggle.active .toggle-knob {
+      transform: translateX(22px);
+    }
+
+    .export-card {
+      background: linear-gradient(135deg, rgba(74, 222, 128, 0.1) 0%, rgba(74, 222, 128, 0.03) 100%);
+      border-radius: 16px;
+      padding: 22px;
+      margin-top: 20px;
+      border: 1px solid rgba(74, 222, 128, 0.2);
+      text-align: center;
+    }
+
+    .export-card p {
+      font-size: 13px;
+      color: var(--textSecondary);
+      line-height: 1.6;
+    }
+
+    .export-card strong {
+      color: var(--textPrimary);
+    }
+
+    .privacy-card {
+      margin-top: 32px;
+      padding: 18px;
+      background: var(--surface);
+      border-radius: 14px;
+      border: 1px solid var(--surfaceBorder);
+    }
+
+    .privacy-card p {
+      font-size: 12px;
+      color: var(--textMuted);
+      line-height: 1.7;
+    }
+
+    .privacy-card strong {
+      color: var(--textSecondary);
+    }
+
+    /* ===== ONBOARDING SCREEN ===== */
+    .onboarding-content {
+      text-align: center;
+      padding: 30px 16px;
+    }
+
+    .onboarding-title {
+      font-family: 'Fraunces', serif;
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: -1px;
+      line-height: 1.2;
+    }
+
+    .onboarding-subtitle {
+      color: var(--textSecondary);
+      font-size: 15px;
+      margin-bottom: 36px;
+      line-height: 1.5;
+    }
+
+    .onboarding-label {
+      text-align: left;
+      font-size: 13px;
+      color: var(--textSecondary);
+      margin-bottom: 12px;
+      font-weight: 500;
+      padding-left: 4px;
+    }
+
+    .currency-selector {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .currency-btn {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: var(--surface);
+      border: 2px solid var(--surfaceBorder);
+      color: var(--textPrimary);
+      font-size: 22px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 500;
+    }
+
+    .currency-btn:hover {
+      border-color: var(--primaryMuted);
+      transform: translateY(-2px);
+    }
+
+    .currency-btn.selected {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: var(--base);
+      box-shadow: 0 4px 16px rgba(74, 222, 128, 0.3);
+    }
+
+    .input-group {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 16px 18px;
+      background: var(--surface);
+      border: 2px solid var(--surfaceBorder);
+      border-radius: 14px;
+      color: var(--textPrimary);
+      font-size: 17px;
+      outline: none;
+      transition: border-color 0.2s ease;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .input-group input:focus {
+      border-color: var(--primary);
+    }
+
+    .input-group input::placeholder {
+      color: var(--textMuted);
+    }
+
+    .onboarding-note {
+      margin-top: 28px;
+      padding: 14px 18px;
+      background: rgba(74, 222, 128, 0.05);
+      border-radius: 12px;
+      border: 1px solid rgba(74, 222, 128, 0.15);
+    }
+
+    .onboarding-note p {
+      font-size: 12px;
+      color: var(--textMuted);
+      line-height: 1.6;
+    }
+
+    /* ===== PREVIEW FOOTER ===== */
+    .preview-footer {
+      text-align: center;
+      margin-top: 80px;
+      padding: 50px 20px 30px;
+      border-top: 1px solid var(--surfaceBorder);
+    }
+
+    .preview-footer p {
+      color: var(--textSecondary);
+      font-size: 14px;
+      max-width: 650px;
+      margin: 0 auto 14px;
+      line-height: 1.7;
+    }
+
+    .preview-footer code {
+      background: var(--surface);
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      color: var(--primary);
+      font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+      border: 1px solid var(--surfaceBorder);
+    }
+
+    .preview-footer .highlight {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .preview-footer .build-command {
+      margin-top: 24px;
+      padding: 16px 24px;
+      background: var(--surface);
+      border-radius: 12px;
+      border: 1px solid var(--surfaceBorder);
+      display: inline-block;
+      font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+      font-size: 13px;
+      color: var(--textSecondary);
+    }
+
+    /* Responsive */
+    @media (max-width: 850px) {
+      .preview-header h1 {
+        font-size: 42px;
+      }
+
+      .phone-frame {
+        width: 340px;
+        height: 700px;
+      }
+
+      .timer-days {
+        font-size: 64px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-header">
+    <h1>Breathe Freely</h1>
+    <p>A premium quit-smoking companion — dark theme, completely offline, zero cost. Your journey to freedom starts with a single breath.</p>
+  </div>
+
+  <div class="screens-container">
+    <!-- HOME SCREEN -->
+    <div class="phone-wrapper">
+      <div class="phone-frame">
+        <div class="screen-content">
+          <div class="home-header">
+            <h2>Breathe Freely</h2>
+            <p>You've made a healthy choice</p>
+          </div>
+
+          <div class="timer-card">
+            <p class="timer-label">Smoke-free for</p>
+            <div class="timer-display">
+              <div class="timer-days">7</div>
+              <div class="timer-days-label">days</div>
+              <div class="timer-time">04:32:18</div>
+            </div>
+
+            <div class="money-card">
+              <p class="money-label">Money Saved</p>
+              <p class="money-value">₹ 1,225</p>
+            </div>
+
+            <div class="action-buttons">
+              <button class="btn btn-primary">Log Craving</button>
+              <button class="btn btn-amber">Breathe SOS</button>
+            </div>
+          </div>
+
+          <div class="milestone-card">
+            <p class="milestone-title">Your recovery journey</p>
+            <div class="milestone-progress">
+              <p>Next milestone: <strong>Smoke-free for 2 weeks</strong> in 5 days</p>
+              <p class="milestone-hint">Your circulation is improving. Keep going!</p>
+            </div>
+          </div>
+
+          <button class="btn btn-secondary" style="width: 100%;">
+            View Health Timeline
+          </button>
+        </div>
+      </div>
+      <p class="screen-label">Home Screen</p>
+    </div>
+
+    <!-- SOS SCREEN -->
+    <div class="phone-wrapper">
+      <div class="phone-frame">
+        <div class="screen-content">
+          <div class="sos-header">
+            <h2>Breathe SOS</h2>
+            <p>Coping tool for cravings</p>
+          </div>
+
+          <div class="breathing-container">
+            <p class="breathing-stage">Inhale slowly...</p>
+            <div class="breathing-orb-container">
+              <div class="breathing-orb"></div>
+              <div class="breathing-orb-ring"></div>
+            </div>
+            <div class="breathing-timer">4</div>
+            <div class="breathing-icon">🫁</div>
+            <div class="breathing-instructions">
+              <p>Breathe in deeply through your nose</p>
+              <p>Hold for 2 seconds</p>
+              <p>Exhale slowly through your mouth</p>
+            </div>
+          </div>
+
+          <div class="outcome-section">
+            <p>How did it go?</p>
+            <div class="action-buttons">
+              <button class="btn btn-primary">I Resisted ✓</button>
+              <button class="btn" style="background: var(--error); color: white;">I Smoked</button>
+            </div>
+          </div>
+
+          <p style="text-align: center; color: var(--textMuted); font-size: 12px; margin-top: 20px; font-style: italic;">
+            This doesn't erase your progress. Every attempt counts.
+          </p>
+        </div>
+      </div>
+      <p class="screen-label">SOS Breathing</p>
+    </div>
+
+    <!-- CRAVING LOG SCREEN -->
+    <div class="phone-wrapper">
+      <div class="phone-frame">
+        <div class="screen-content form-screen">
+          <h2 class="form-title">Log Craving</h2>
+          <p class="form-subtitle">Understanding your triggers helps you prepare for them.</p>
+
+          <p class="section-label">What triggered this craving?</p>
+          <div class="chip-group">
+            <span class="chip selected">Stress</span>
+            <span class="chip">After coffee</span>
+            <span class="chip">After a meal</span>
+            <span class="chip">Social situation</span>
+            <span class="chip">Boredom</span>
+            <span class="chip">Tired</span>
+            <span class="chip">Unknown</span>
+          </div>
+
+          <p class="section-label">How did you respond?</p>
+          <div class="outcome-buttons">
+            <button class="outcome-btn selected">Resisted</button>
+            <button class="outcome-btn danger">Smoked</button>
+          </div>
+
+          <div class="action-buttons" style="margin-top: 24px;">
+            <button class="btn btn-secondary">Cancel</button>
+            <button class="btn btn-primary">Save</button>
+          </div>
+        </div>
+      </div>
+      <p class="screen-label">Craving Log</p>
+    </div>
+
+    <!-- HEALTH TIMELINE SCREEN -->
+    <div class="phone-wrapper">
+      <div class="phone-frame">
+        <div class="screen-content">
+          <div class="timeline-header">
+            <h2>Health Timeline</h2>
+            <p>Your body's recovery, one milestone at a time</p>
+          </div>
+
+          <div class="timeline-list">
+            <div class="timeline-item">
+              <div class="timeline-badge completed">1d</div>
+              <div class="timeline-content">
+                <h4 class="completed">Smoke-free for a day</h4>
+                <p>Your lungs begin to clear mucus and debris.</p>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-badge completed">3d</div>
+              <div class="timeline-content">
+                <h4 class="completed">Smoke-free for 3 days</h4>
+                <p>Carbon monoxide is eliminated. Oxygen levels normalize.</p>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-badge completed">1w</div>
+              <div class="timeline-content">
+                <h4 class="completed">Smoke-free for a week</h4>
+                <p>Nicotine is no longer in your system.</p>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-badge current">2w</div>
+              <div class="timeline-content">
+                <h4>Smoke-free for 2 weeks</h4>
+                <p>You feel more energetic and focused.</p>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-badge">1mo</div>
+              <div class="timeline-content">
+                <h4>Smoke-free for a month</h4>
+                <p>Your breathing is noticeably better. Coughing decreases.</p>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-badge">3mo</div>
+              <div class="timeline-content">
+                <h4>Smoke-free for 3 months</h4>
+                <p>Lung function improves up to 30%. Walking becomes easier.</p>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-badge">1y</div>
+              <div class="timeline-content">
+                <h4>Smoke-free for a year</h4>
+                <p>Your risk of coronary heart disease is half that of a smoker.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="screen-label">Health Timeline</p>
+    </div>
+
+    <!-- SETTINGS SCREEN -->
+    <div class="phone-wrapper">
+      <div class="phone-frame">
+        <div class="screen-content">
+          <div class="settings-header">
+            <h2>Settings</h2>
+            <p>Customize your experience</p>
+          </div>
+
+          <div class="settings-section">
+            <p class="settings-section-title">Notifications</p>
+            <div class="settings-item">
+              <span class="settings-label">Morning reminder</span>
+              <span class="settings-value">7:00 AM</span>
+            </div>
+            <div class="settings-item">
+              <span class="settings-label">Evening reminder</span>
+              <span class="settings-value">9:00 PM</span>
+            </div>
+            <div class="settings-item">
+              <span class="settings-label">Weekly progress</span>
+              <div class="toggle active">
+                <div class="toggle-knob"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-section">
+            <p class="settings-section-title">Your preferences</p>
+            <div class="settings-item">
+              <span class="settings-label">Currency</span>
+              <span class="settings-value">₹ INR</span>
+            </div>
+            <div class="settings-item">
+              <span class="settings-label">Price per pack</span>
+              <span class="settings-value">₹ 350</span>
+            </div>
+            <div class="settings-item">
+              <span class="settings-label">Cigarettes/day</span>
+              <span class="settings-value">10</span>
+            </div>
+          </div>
+
+          <div class="export-card">
+            <p style="margin-bottom: 12px;">
+              <strong style="color: var(--primary);">Backup your progress</strong>
+            </p>
+            <p>Export a code you can restore on a new device. Your data never leaves your phone.</p>
+            <button class="btn btn-primary" style="width: 100%; margin-top: 16px;">
+              Export Progress
+            </button>
+          </div>
+
+          <div class="privacy-card">
+            <p>
+              <strong style="color: var(--primary);">Privacy:</strong> All your progress is stored on this device only. Nothing is shared, tracked, or uploaded. Delete the app anytime to remove all data.
+            </p>
+          </div>
+        </div>
+      </div>
+      <p class="screen-label">Settings</p>
+    </div>
+
+    <!-- ONBOARDING SCREEN -->
+    <div class="phone-wrapper">
+      <div class="phone-frame">
+        <div class="screen-content">
+          <div class="onboarding-content">
+            <h2 class="onboarding-title">Welcome to<br/>Breathe Freely</h2>
+            <p class="onboarding-subtitle">Let's set up your quit journey in seconds.</p>
+
+            <p class="onboarding-label">Choose your currency</p>
+            <div class="currency-selector">
+              <button class="currency-btn selected">₹</button>
+              <button class="currency-btn">$</button>
+              <button class="currency-btn">£</button>
+              <button class="currency-btn">€</button>
+            </div>
+
+            <div class="input-group">
+              <label class="onboarding-label">Price per pack</label>
+              <input type="number" value="350" placeholder="e.g., 350" />
+            </div>
+
+            <div class="input-group">
+              <label class="onboarding-label">Cigarettes per day</label>
+              <input type="number" value="10" placeholder="e.g., 10" />
+            </div>
+
+            <button class="btn btn-primary" style="width: 100%; margin-top: 32px; padding: 18px; font-size: 16px;">
+              Start My Journey
+            </button>
+
+            <div class="onboarding-note">
+              <p>
+                <strong style="color: var(--primary);">No account needed.</strong> Your data stays on your device. This app is for motivational support, not medical advice.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="screen-label">Onboarding</p>
+    </div>
+  </div>
+
+  <div class="preview-footer">
+    <p>
+      <span class="highlight">Design System:</span> Premium dark theme with
+      <code>#0D0F12</code> base, <code>#4ADE80</code> primary green (trust, recovery),
+      and <code>#F59E0B</code> amber (money, rewards).
+    </p>
+    <p>
+      <span class="highlight">Typography:</span> Fraunces for headings (premium feel), Inter for body (readability).
+      Carefully crafted spacing, shadows, and animations throughout.
+    </p>
+    <p>
+      <span class="highlight">Built with:</span> Expo (React Native), TypeScript, AsyncStorage.
+      No accounts, no servers, no internet required. 100% free to build and run.
+    </p>
+    <div class="build-command">
+      Build APK: <code style="margin-left: 12px;">cd BreatheFreely && npx eas build --platform android --profile preview</code>
+    </div>
+  </div>
+
+  <script>
+    // Interactive chip selection
+    document.querySelectorAll('.chip').forEach(chip => {
+      chip.addEventListener('click', function() {
+        this.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+        this.classList.add('selected');
+      });
+    });
+
+    // Interactive outcome buttons
+    document.querySelectorAll('.outcome-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        this.parentElement.querySelectorAll('.outcome-btn').forEach(b => b.classList.remove('selected'));
+        this.classList.add('selected');
+      });
+    });
+
+    // Interactive currency buttons
+    document.querySelectorAll('.currency-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        this.parentElement.querySelectorAll('.currency-btn').forEach(b => b.classList.remove('selected'));
+        this.classList.add('selected');
+      });
+    });
+
+    // Interactive toggle
+    document.querySelectorAll('.toggle').forEach(toggle => {
+      toggle.addEventListener('click', function() {
+        this.classList.toggle('active');
+      });
+    });
+
+    // Breathing timer animation
+    let breathingSeconds = 4;
+    let breathingStage = 'inhale';
+    const stageText = document.querySelector('.breathing-stage');
+    const timerDisplay = document.querySelector('.breathing-timer');
+    const iconDisplay = document.querySelector('.breathing-icon');
+
+    setInterval(() => {
+      breathingSeconds--;
+      if (breathingSeconds <= 0) {
+        if (breathingStage === 'inhale') {
+          breathingStage = 'hold';
+          breathingSeconds = 2;
+          stageText.textContent = 'Hold your breath...';
+          iconDisplay.textContent = '⏸️';
+        } else if (breathingStage === 'hold') {
+          breathingStage = 'exhale';
+          breathingSeconds = 4;
+          stageText.textContent = 'Exhale slowly...';
+          iconDisplay.textContent = '💨';
+        } else {
+          breathingStage = 'inhale';
+          breathingSeconds = 4;
+          stageText.textContent = 'Inhale slowly...';
+          iconDisplay.textContent = '🫁';
+        }
+      }
+      timerDisplay.textContent = breathingSeconds;
+    }, 1000);
+  </script>
+</body>
+</html>

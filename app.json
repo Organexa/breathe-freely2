@@ -1,0 +1,58 @@
+{
+  "expo": {
+    "name": "Breathe Freely",
+    "slug": "breathe-freely",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0D0F12"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": false
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0D0F12"
+      },
+      "package": "com.breathefreely.app",
+      "permissions": [
+        "VIBRATE",
+        "POST_NOTIFICATIONS"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-font",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/notification-icon.png",
+          "color": "#4ADE80",
+          "sounds": []
+        }
+      ]
+    ],
+    "updates": {
+      "url": "https://u.expo.dev/breathe-freely-production"
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "89e4df00-9517-46bb-9bda-1cf64aa4bed9"
+      }
+    },
+    "owner": "organexa"
+  }
+}
