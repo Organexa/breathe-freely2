@@ -1,213 +1,95 @@
 # Breathe Freely — Deployment Guide
 
-This guide tells you exactly how to build, install, and share the completed app on Android.
+How to turn this project into an installable APK with Expo EAS Build (free plan: 15 Android builds a month).
 
-## Prerequisites
+## What you need
 
-You need three things before you start:
+1. **A free Expo account**: sign up at https://expo.dev.
+2. **Node.js 18 or newer** on your computer: https://nodejs.org (LTS).
+3. **An Android phone** to install the APK on.
 
-1. **A free Expo account** — go to `expo.dev` and create one.
-2. **The Expo app installed on your Android phone** — available on Google Play Store.
-3. **A terminal (optional)** — you'll use this for one quick EAS command. If you don't have one, I'll give you browser-only steps.
+You do **not** need Android Studio, a Google Play account, or any paid service.
 
-## Step 1: Log into Expo
+## Step 1: Install dependencies
 
-1. Go to `expo.dev`
-2. Click **Sign in with GitHub** (recommended) or create a free account
-3. Verify your email if you receive a confirmation
-
-If you don't want to use GitHub, you can sign up with email instead.
-
-## Step 2: Install EAS CLI (one-time)
-
-Run this in a terminal (PowerShell on Windows, Terminal on Mac/Linux):
+Unzip the project, open a terminal in the project folder, and run:
 
 ```bash
-npm install -g eas-cli
+npm install
 ```
 
-That's it. You only need to do this once.
+> Do **not** run `create-expo-app` in this folder. The project is already complete.
 
-## Step 3: Initialize the project
-
-Navigate to the project folder I created for you and run:
+## Step 2: Log in to Expo
 
 ```bash
-cd BreatheFreely
-npx create-expo-app@latest . --template blank-typescript
+npx eas-cli login
 ```
 
-This initializes the Expo project in the existing folder.
-
-## Step 4: Login to Expo
-
-Run this in the project folder:
+## Step 3: Link the project to your Expo account (first time only)
 
 ```bash
-eas login
+npx eas-cli init
 ```
 
-Enter your Expo account credentials. When asked, log in with GitHub for the easiest experience.
+Answer **Yes** to create the project. This adds your `projectId` and `owner` to `app.json`.
 
-## Step 5: Build the app
-
-Run this command to build the APK:
+## Step 4: Build the APK
 
 ```bash
-npx eas build --platform android --profile preview
+npx eas-cli build --platform android --profile preview
 ```
 
-Or, if you want to build it with browser, you don't need a terminal at all — just wait, I'll give you simpler steps below.
+- If asked to generate a new Android keystore, answer **Yes**. Expo stores it for you, and every later build is signed with the same key, so updates install over the old version.
+- The build runs in Expo's cloud and usually takes 10 to 20 minutes. You can close the terminal; progress is also at https://expo.dev under your project's **Builds** tab.
+- If the CLI says the folder is not a git repository, either run `git init && git add -A && git commit -m "Initial commit"` first, or set `EAS_NO_VCS=1` before the build command.
 
-## Step 6: Download and install
+## Step 5: Install on your phone
 
-### If you used the terminal method:
+1. When the build finishes, open the link the CLI prints (or the build page on expo.dev) **on your phone**, and tap **Install** or download the `.apk`.
+2. Android will ask you to allow installs from your browser or file manager. Allow it for this install.
+3. Open **Breathe Freely**.
 
-1. When the build finishes, Expo will give you a download link to the APK.
-2. Download the APK to your phone.
-3. Open the file to install it.
+## Build profiles (eas.json)
 
-### If you use browser (no terminal needed):
+| Profile | Output | Use |
+|---|---|---|
+| `preview` | APK | Installing on your own phone and sharing directly. **Use this one.** |
+| `production` | APK | Same as preview, without internal-distribution QR page. |
+| `development` | APK with dev client | Only for live-reloading development. |
 
-1. After running `eas build`, Expo will show a status page. Wait until it says "ε: Build completed successfully."
-2. Click the **Android** tab to download the APK.
-3. Transfer the file to your phone (email, WhatsApp, Bluetooth, USB).
-4. Open the file to install it.
+For a Google Play listing you would need an `.aab` instead: change `production.android.buildType` to `app-bundle`.
 
-## Step 7: Install Expo Go (skip if app already installed)
+## Releasing an update
 
-The APK I build is a distributable app. However, I also created an **Expo Go** preview inside the same project you can test immediately:
+1. Make your changes.
+2. Increase `version` (for example `1.0.1`) **and** `android.versionCode` (for example `2`) in `app.json`.
+3. Run the build command from Step 4 again and install the new APK over the old one. Data is kept.
 
-1. On your phone, go to **Play Store**.
-2. Install **Expo Go** (free, by Expo).
-3. On your computer, my instructions will tell you how to run the "preview" (run on your own phone) instead of building the APK.
-
-## Step 8: Sign in to the app
-
-When you first open the app:
-
-1. Tap through the onboarding (I've set it to default to "quit now").
-2. Enter your currency (default is ₹ if you selected India, otherwise $).
-3. Enter price per pack (default ₹ 350).
-4. Enter cigarettes per day (default 10).
-5. Tap **Continue**.
-
-Your **smoke-free timer is now live.**
-
-## Step 9: Set up notifications (optional)
-
-1. Go to Settings.
-2. Toggle **Morning reminder** and choose a time (default 7:00).
-3. Toggle **Evening reminder** and choose a time (default 21:00).
-4. Toggle **Weekly progress** and choose a day (default Sunday).
-5. Notifications will now appear automatically on your phone.
-
-## Step 10: Test the features
-
-- **Home:** Watch your timer tick and money saved increase.
-- **Health:** Tap the health milestones section to see your recovery timeline.
-- **SOS:** When you want a quick breathing exercise, tap the SOS button.
-- **Craving log:** Log a craving by tapping "Log craving" from home.
-- **Backup:** In Settings, tap "Export progress" — this copies a code. Send it to yourself and test restore later.
-
-## Common issues and solutions
-
-### Issue: `eas build` fails with "Invalid app configuration"
-
-**Solution:** Make sure `app.json` exists and has `expo` property with `name` and `slug`.
-
-### Issue: Build is queued and stuck
-
-**Solution:** The free build queue is shared with everyone. It can take 10–60 minutes. Wait and refresh the page often.
-
-### Issue: Installation fails with "App not installed"
-
-**Solution:** First uninstall "Breathe Freely" (if it exists), then try again. Or install App Cloner (premium), but that's extra work.
-
-### Issue: Notification permission popup is blocked
-
-**Solution:** Android sometimes shows permission dialogs in the wrong corner. Open Settings → Apps → Breathe Freely → Permissions and manually enable Notifications.
-
-### Issue: Code export doesn't copy
-
-**Solution:** On most phones, holding long on the code selects it. Or tap the share button in the settings and send it to yourself via WhatsApp or email.
-
-### Issue: Dates look wrong (timezone)
-
-**Solution:** The app uses your phone's timezone. If you move countries, go to Settings → Edit quit time and reconfirm your quit moment in the local timezone.
-
-### Issue: Timer stops when phone is locked
-
-**Solution:** Nothing is wrong. The timer keeps running — it's just not visible when the screen is off. Unlock the phone to see the live time.
-
-### Issue: I can't build more than 15 times a month
-
-**Solution:** The free EAS plan limits builds, not the app itself. GitHub has a funding option, but the app works fine without it. You can share the same APK across your friends — there's no built-in "device linking."
-
-### Issue: I deleted my Expo account
-
-**Solution:** You don't need Expo account access anymore. Your APK is a complete, standalone executable. For future updates, just rebuild locally on your own machine.
-
-## Sharing with others
-
-### Free distribution (no store)
-
-1. Build the APK once (15/month on free plan).
-2. Share the APK via WhatsApp, email, or any method.
-3. Each person downloads and installs it themselves.
-
-### Using Expo Go (no build needed)
-
-If you want to test the app on your own phone before building:
-
-1. Install Expo Go on your phone.
-2. Run: `npx expo start` (in the project folder).
-3. Scan the QR code with your phone's Expo Go app.
-4. Tap **Run on Android device/emulator**.
-
-This gives you immediate testing without a cloud build.
-
-## Updating after changes
-
-If you make changes to the app code and want to publish a new build:
+## Trying the app without building (Expo Go)
 
 ```bash
-npx eas build --platform android --profile preview --local
+npx expo start
 ```
 
-The `--local` flag means the build runs on Expo's cloud, as usual. If you have a paid EAS plan, use `--profile production` for store-ready builds.
+Scan the QR code with the **Expo Go** app from the Play Store. Everything works except that reminders behave slightly differently in Expo Go than in the real APK.
+
+## Common issues
+
+| Problem | Fix |
+|---|---|
+| `eas build` says *Invalid app configuration* | Run `npx expo-doctor` and fix what it lists. |
+| *Project not configured* / *owner mismatch* | Run `npx eas-cli init` again while logged into your account. |
+| Build stuck *in queue* | Free-plan builds wait in a shared queue. It can take a while at busy times. |
+| *App not installed* on the phone | An older APK signed with a different key is installed. Uninstall it first (export a backup code from Settings beforehand). |
+| No reminders arrive | Settings → Reminders must be on, and Android must allow notifications for the app. Some phones' battery savers delay them. |
+| 15 builds a month used up | Wait for the monthly reset, or build locally with `npx expo run:android` (needs Android Studio). |
 
 ## Final checklist
 
-- [ ] Expo account created and logged in
-- [ ] EAS CLI installed once
-- [ ] `eas build` ran successfully
-- [ ] Downloaded APK
-- [ ] Installed app on phone
-- [ ] Completed onboarding
-- [ ] Verified timer is ticking live
-- [ ] Verified money saved is increasing
-- [ ] (Optional) Tested notifications
-- [ ] (Optional) Tested SOS breathing guide
-- [ ] Backed up using export code
-
-## What's NOT required
-
-You do **NOT** need:
-- Google Play Developer account ($25 one-time)
-- A phone that's rooted or modified
-- A developer SDK installed on your computer
-- Developer skills or coding experience
-- Any paid subscription ever
-
-The entire build and installation process can be done in a web browser, requiring zero terminal work after the initial login.
-
-## Support
-
-If anything breaks:
-
-1. Check this guide — most issues are here.
-2. Rebuild the app with `npx eas build --platform android`.
-3. Come back to me with the error message.
-
-The app is deliberately simple because that's how we keep it free and reliable. The fewer moving parts, the fewer things that can break.
+- [ ] `npm install` finished without errors
+- [ ] `npx eas-cli init` linked the project to your account
+- [ ] Preview build finished on expo.dev
+- [ ] APK installed and opens to the welcome screen
+- [ ] Timer ticks, SOS breathing guide runs, a craving can be logged
+- [ ] Export code from Settings, then restore it, works

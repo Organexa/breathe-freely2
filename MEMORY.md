@@ -4,9 +4,9 @@
 
 Breathe Freely is a free, private, offline-first Android app that helps people quit smoking. It shows how long someone has been smoke-free, the money they've saved, what their body is recovering, and provides an instant breathing guide when a craving hits. No account, no sign-up, no ads, no data upload.
 
-**Current status:** v1 in development.
+**Current status:** Breathe Freely V1.0 released. APK built with EAS (build ad4f3553-9b17-4fa0-a7ff-18817c6512a7, project @organexas-team/breathe-freely).
 **Platform:** Android (built with Expo / React Native).
-**Current milestone:** Documentation complete. Awaiting app build.
+**Current milestone:** Source, assets and config complete. Typecheck, 16 unit tests, Android bundle export and `expo prebuild` all pass. Next step: build the APK with EAS (see DEPLOYMENT.md).
 
 ## Important decisions
 
@@ -42,58 +42,19 @@ BreatheFreely/
 │   └── screens/                    # full pages
 ```
 
-## Completed features (docs only)
+## Implementation notes
 
-- PRD.md — product requirements, user stories, acceptance criteria
-- TRD.md — technology stack, dependencies, deployment plan
-- ARCHITECTURE.md — system diagram, data flow, failure modes
-- DESIGN.md — color palette, typography, components, animations
-- RULES.md — coding standards and patterns (to be written)
-- FEATURE-TICKETS.md — task breakdown (to be written)
-- SECURITY-AND-ACCESS.md — privacy and access control (to be written)
-- DEPLOYMENT.md — build and install instructions (to be written)
-- TESTING.md — verification scenarios (to be written)
-- MEMORY.md — this file
-
-## Pending work
-
-1. **Write RULES.md** — coding standards, naming conventions, file organization
-2. **Write FEATURE-TICKETS.md** — all approved features broken into tasks
-3. **Write SECURITY-AND-ACCESS.md** — privacy, storage security, backup
-4. **Write DEPLOYMENT.md** — EAS Build steps, APK installation, update flow
-5. **Write TESTING.md** — verification scenarios for each feature
-6. **Create app files** — all TypeScript source, components, screens, navigation
-7. **Create config files** — `app.json`, `eas.json`, `package.json`, etc.
-8. **Present to user** — file structure and next steps for building APK
-
-## Files created (as of now)
-
-```
-BreatheFreely/
-└── docs/
-    ├── PRD.md                    ✓ Done
-    ├── TRD.md                    ✓ Done
-    ├── ARCHITECTURE.md           ✓ Done
-    ├── DESIGN.md                 ✓ Done
-    └── MEMORY.md                 ✓ Done (this file)
-```
-
-## Blocking issues
-
-None. Documentation is the only remaining non-coding work before the app build.
-
-## What to resume from
-
-Resume by reading `MEMORY.md` and `PRD.md`, then:
-1. Finish RULES.md
-2. Finish FEATURE-TICKETS.md
-3. Finish SECURITY-AND-ACCESS.md
-4. Finish DEPLOYMENT.md
-5. Finish TESTING.md
-6. Build the complete app
-7. Present files to user
-
-The next turn should continue with the documentation batch (RULES, FEATURE-TICKETS, SECURITY, DEPLOYMENT, TESTING), then move to the app build.
+- All 18 app tickets (T01–T18) are implemented under `src/` plus `App.tsx` / `index.ts`.
+- Screens: Onboarding (4 steps), Home, Sos, CravingLog, Slip, Journal (patterns + history), HealthTimeline, Settings, Restore.
+- Navigation switches between the onboarding stack and the main stack based on `settings.onboarded`.
+- Persistence is write-through from `AppContext`; it is disabled if the initial read fails, so stored data is never overwritten by defaults.
+- Backup code format: `BF1.<base64url JSON>.<first 16 hex of SHA-256>`, validated field by field.
+- Reminders are rescheduled from settings whenever relevant settings change.
+- The timer ring is SVG-free (60 tick views); the breathing orb uses the built-in Animated API.
+- `react-native-reanimated` and `react-native-gesture-handler` were dropped as unused.
+- Health timeline is vertical rather than horizontal (more readable on a phone).
+- `eas.json` profiles: `preview` and `production` both produce an APK.
+- `app.json` no longer has a hard-coded `owner`/`projectId`/updates URL; `eas init` adds the user's own.
 
 ## External dependencies (all free)
 

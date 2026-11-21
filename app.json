@@ -6,6 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
+    "backgroundColor": "#0D0F12",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -15,17 +16,25 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": false
+      "supportsTablet": false,
+      "bundleIdentifier": "com.breathefreely.app"
     },
     "android": {
+      "package": "com.breathefreely.app",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0D0F12"
       },
-      "package": "com.breathefreely.app",
       "permissions": [
         "VIBRATE",
-        "POST_NOTIFICATIONS"
+        "POST_NOTIFICATIONS",
+        "RECEIVE_BOOT_COMPLETED"
+      ],
+      "blockedPermissions": [
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.SYSTEM_ALERT_WINDOW"
       ]
     },
     "web": {
@@ -42,17 +51,11 @@
         }
       ]
     ],
-    "updates": {
-      "url": "https://u.expo.dev/breathe-freely-production"
-    },
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
+    "owner": "organexas-team",
     "extra": {
       "eas": {
-        "projectId": "89e4df00-9517-46bb-9bda-1cf64aa4bed9"
+        "projectId": "6d2acdce-c1a4-4e49-9ece-7f95e1d25791"
       }
-    },
-    "owner": "organexa"
+    }
   }
 }
